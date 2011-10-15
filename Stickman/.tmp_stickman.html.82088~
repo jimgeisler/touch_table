@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="Stickman simulation for touch table" />
+
+    <title>Stickman</title>
+    <link rel="stylesheet" href="assets/reset.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" charset="utf-8">
+
+    <script type="text/javascript" charset="utf-8" src="lib/mootools-1.2.4-core-yc.js"></script>
+    <script type="text/javascript" charset="utf-8" src="source/fast_vector.js"></script>
+    <script type="text/javascript" charset="utf-8" src="source/canvas.js"></script>
+    <script type="text/javascript" charset="utf-8" src="source/point.js"></script>
+    <script type="text/javascript" charset="utf-8" src="source/constraint.js"></script>
+    <script type="text/javascript" charset="utf-8" src="source/cloth.js"></script>
+</head>
+<body>
+    <div class="experiment">
+        <canvas width="650px" height="450px">
+            <strong>Sorry, It looks as though your browser does not support the canvas tag...</strong> If you can, I suggest that you try Chrome or Safari.
+        </canvas>
+    </div>
+
+</body>
+</html>

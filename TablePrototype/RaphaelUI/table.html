@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Device Management Table</title>
+    <link rel="stylesheet" href="demo.css" type="text/css" media="screen">
+    <script type="text/javascript" src="raphael.js" charset="utf-8"></script>
+    <script type="text/javascript" src="log.js"></script>
+    <script type="text/javascript" src="tuio.js"></script>
+    <script type="text/javascript" src="tuiojs.npTuioClient.js"></script>
+    <script type="text/javascript" src="interface.js" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+
+	var testDeviceInterfaces = [];
+	var testTouchInterface = new TouchInterface();
+
+      tuio.object_update(function(data) {
+        testDeviceInterfaces[data.fid].move(data.x,data.y,data.angle);        
+	    //log('[object] update: sid=' + data.sid + ', fid=' + data.fid + ', x=' + data.x + ', y=' + data.y + ', angle=' + data.angle);
+      });
+
+      tuio.object_add(function(data) {
+        testDeviceInterfaces[data.fid].show(data.x,data.y);
+	    //log('[object] add: sid=' + data.sid + ', fid=' + data.fid + ', x=' + data.x + ', y=' + data.y + ', angle=' + data.angle);
+      });
+
+      tuio.object_remove(function(data) {
+        testDeviceInterfaces[data.fid].hide();
+	    log('[object] remove: x=' + data.x + ', y=' + data.y);
+      });
+
+      tuio.cursor_add(function(data) {
+  	    testTouchInterface.touch(data.fid,data.x,data.y);
+	    //log('[cursor] add: x=' + data.x + ', y=' + data.y);
+      });
+ 
+      tuio.cursor_update(function(data) {
+        testTouchInterface.drag(data.fid,data.x,data.y);
+	    //log('[cursor] update: x=' + data.x + ', y=' + data.y);
+      });
+
+      tuio.cursor_remove(function(data) {
+        testTouchInterface.release(data.fid,data.x,data.y);
+	    //log('[cursor] remove: x=' + data.x + ', y=' + data.y);
+      });
+
+      window.onload = function () {
+        var r = Raphael(0,0,window.innerWidth, window.innerHeight);
+        // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
+        r.customAttributes.arc = function (xloc, yloc, value, total, R) {
+            var alpha = 360 / total * value,
+                a = (90 - alpha) * Math.PI / 180,
+                x = xloc + R * Math.cos(a),
+                y = yloc - R * Math.sin(a),
+                path;
+            if (total == value) {
+                path = [["M", xloc, yloc - R], ["A", R, R, 0, 1, 1, xloc - .01, yloc - R]];
+            } else {
+                path = [["M", xloc, yloc - R], ["A", R, R, 0, +(alpha > 180), 1, x, y]];
+            }
+            return {path: path};
+        };               
+        for (var i=0;i<5;i++) {        
+        	testDeviceInterfaces.push(new DeviceInterface());        	
+        	testDeviceInterfaces[i].init(r);
+        }
+        testTouchInterface.init(r);
+      };
+    </script>
+  </head>
+  <body>
+    <div id="holder"></div>
+    <object id="tuio" height="0" width="0" type="application/x-tuio">Plugin FAILED to load</object>
+  </body>
+</html>
